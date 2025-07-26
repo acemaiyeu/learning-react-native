@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { StyleSheet, Text,  View, TextInput, Button, FlatList, TouchableOpacity, Pressable } from 'react-native';
+import { StyleSheet, Text,  View, TextInput, Button, FlatList, TouchableOpacity, Pressable, Alert } from 'react-native';
 
 interface ITodo {
   id: number,
@@ -14,7 +14,7 @@ export default function App() {
   }
   const handleAddTodo = () => {
     if( !todo) {
-      alert("empty value")
+      Alert.alert("Lỗi input todo", "Todo không được để trống")
       return;
     }
     setListTodo([...ListTodo, {id: randomInteger(2,2000000), name: todo}])
