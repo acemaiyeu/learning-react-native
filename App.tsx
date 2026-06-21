@@ -1,86 +1,45 @@
 
-import { useState } from 'react';
-import { StyleSheet, Text,  View, TextInput, Button, FlatList, TouchableOpacity, Pressable, Alert } from 'react-native';
+import {View} from 'react-native';
+import AboutScreen from './components/review/about';
+import DetailScreen from './components/review/detail';
+import HomeScreen from './components/review/home';
 
-interface ITodo {
-  id: number,
-  name: string
-}
-export default function App() {
-  const [todo, setTodo] = useState("");
-  const [ListTodo, setListTodo] = useState<ITodo[]>([]);
-  function randomInteger(min: number, max: number){
-    return Math.floor(Math.random() * (max-min+1)) + min;
-  }
-  const handleAddTodo = () => {
-    if( !todo) {
-      Alert.alert("Lỗi input todo", "Todo không được để trống")
-      return;
-    }
-    setListTodo([...ListTodo, {id: randomInteger(2,2000000), name: todo}])
-    setTodo("")
-  }
-  const deleteTodo = (id: number) =>{
-    const newTodo = ListTodo.filter(item => item.id != id)
-    setListTodo(newTodo)
-  }
-  return (
-    <View style={styles.container}>
-    <Text style={styles.header}>Todo APP</Text>
-    {/* <form action=""></form> */}
+import { useFonts } from 'expo-font'; 
+import * as SplashScreen from 'expo-splash-screen'; 
+import {useEffect} from 'react';
+import { OPENSAN_REGULAR } from './utils/const';
 
-    <View style={styles.body}>
-      <TextInput value={todo} onChangeText={(value) => setTodo(value)} style={styles.todo_input} />
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-      <Button onPress={() => handleAddTodo()}  title='Add Todo'/>
-    </View>
-    {/* list  */}
-    <View style={styles.body}>
-        <FlatList data={ListTodo} renderItem={({item}) => {
-          return (
-            <Pressable style={(({pressed}) => ({opacity: pressed ? 0.5 : 2}))} onPress={() => deleteTodo(item.id)}>
-              <Text style={styles.todoItem}>{item.name}</Text>
-            </Pressable>
-          )
-        }} />
-    </View>
-    </View>
-  );
-}
 
-const styles = StyleSheet.create({
-  header: {
-    backgroundColor: "orange",
-    paddingHorizontal: 20,
-    textAlign: 'center',
-    fontSize: 40
-  },
 
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    paddingTop: 50
-    // marginTop: 50,
-    // paddingHorizontal: 20
-    // alignItems: 'center',
-    // justifyContent: 'center',
+const App = () =>  {
+  SplashScreen.preventAutoHideAsync();
+
   
-  },
-  todo_input: {
-    borderBottomWidth: 1,
-    borderBlockColor: "green",
-    padding: 5,
-    margin: 15
-  },
-  body: {
-    paddingHorizontal: 10,
-    marginBottom: 20
-  },
-  todoItem: {
-    fontSize: 20,
-    marginBottom: 25,
-    borderWidth: 1,
-    borderStyle: "dashed",
-    padding: 10
+  const [loaded, error] = useFonts({
+    [OPENSAN_REGULAR]: require('./assets/fonts/OpenSans-Regular.ttf'),
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
+  if (!loaded && !error) {
+    return null;
   }
-});
+  const Stack = createNativeStackNavigator();
+
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="home" component={HomeScreen} options={{title: "Trang chủ"}}/>
+        <Stack.Screen name="review-detail" component={DetailScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+export default App;
