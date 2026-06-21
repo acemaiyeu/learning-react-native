@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 const AboutScreen = () => {
     return (
         <View>
-            <Text style={[styles.about, globalStyle.globalFont]}>About google</Text>
+            <Text style={[styles.about, globalStyle.globalFont]}>About review app</Text>
         </View>
     )
 }
