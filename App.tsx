@@ -13,6 +13,7 @@ import { NavigationContainer } from '@react-navigation/native';
 
 import 'react-native-gesture-handler'
 import AppNavigation from './components/navigation/app.navigation';
+import AppHeader from './components/navigation/app.header';
 
 
 
@@ -39,7 +40,7 @@ const App = () =>  {
   return (
     <NavigationContainer>
       <AppNavigation />
-      
+      <AppHeader/>
     </NavigationContainer>
   )
 }
